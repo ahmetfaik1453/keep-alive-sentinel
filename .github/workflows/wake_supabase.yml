@@ -2,7 +2,7 @@ name: Keep Supabase Databases Alive
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Her gun saat 06:00 UTC
+    - cron: '0 6,18 * * *' # Gunde 2 kez (06:00 ve 18:00 UTC) calisir
   workflow_dispatch:
 
 jobs:
@@ -19,11 +19,15 @@ jobs:
 
       - name: Supabase Projelerini Yokla
         env:
+          SUPABASE_URL_SANAL_KABIN: ${{ secrets.SUPABASE_URL_SANAL_KABIN }}
+          SUPABASE_KEY_SANAL_KABIN: ${{ secrets.SUPABASE_KEY_SANAL_KABIN }}
+          SUPABASE_URL_TERCUME: ${{ secrets.SUPABASE_URL_TERCUME }}
+          SUPABASE_KEY_TERCUME: ${{ secrets.SUPABASE_KEY_TERCUME }}
+          SUPABASE_URL_ATAMA360: ${{ secrets.SUPABASE_URL_ATAMA360 }}
+          SUPABASE_KEY_ATAMA360: ${{ secrets.SUPABASE_KEY_ATAMA360 }}
           SUPABASE_URL_FORMOPTIMUM: ${{ secrets.SUPABASE_URL_FORMOPTIMUM }}
           SUPABASE_KEY_FORMOPTIMUM: ${{ secrets.SUPABASE_KEY_FORMOPTIMUM }}
           SUPABASE_URL_PROPERTY_PASSPORT: ${{ secrets.SUPABASE_URL_PROPERTY_PASSPORT }}
           SUPABASE_KEY_PROPERTY_PASSPORT: ${{ secrets.SUPABASE_KEY_PROPERTY_PASSPORT }}
-          SUPABASE_URL_TERCUME: ${{ secrets.SUPABASE_URL_TERCUME }}
-          SUPABASE_KEY_TERCUME: ${{ secrets.SUPABASE_KEY_TERCUME }}
         run: |
           python scripts/ping_supabase.py
