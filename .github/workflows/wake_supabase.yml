@@ -1,0 +1,29 @@
+name: Keep Supabase Databases Alive
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Her gun saat 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Supabase Projelerini Yokla
+        env:
+          SUPABASE_URL_FORMOPTIMUM: ${{ secrets.SUPABASE_URL_FORMOPTIMUM }}
+          SUPABASE_KEY_FORMOPTIMUM: ${{ secrets.SUPABASE_KEY_FORMOPTIMUM }}
+          SUPABASE_URL_PROPERTY_PASSPORT: ${{ secrets.SUPABASE_URL_PROPERTY_PASSPORT }}
+          SUPABASE_KEY_PROPERTY_PASSPORT: ${{ secrets.SUPABASE_KEY_PROPERTY_PASSPORT }}
+          SUPABASE_URL_TERCUME: ${{ secrets.SUPABASE_URL_TERCUME }}
+          SUPABASE_KEY_TERCUME: ${{ secrets.SUPABASE_KEY_TERCUME }}
+        run: |
+          python scripts/ping_supabase.py

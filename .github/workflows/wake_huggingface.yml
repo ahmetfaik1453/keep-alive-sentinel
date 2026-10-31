@@ -1,0 +1,21 @@
+name: Wake Up Hugging Face Space
+
+on:
+  schedule:
+    - cron: '*/20 * * * *' # Her 20 dakikada bir calisir
+  workflow_dispatch: # Manuel tetikleme imkani
+
+jobs:
+  ping-hf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Private HF Space
+        run: |
+          echo "Hugging Face Space yoklaniyor..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${{ secrets.HF_TOKEN }}" https://ahmetfaik-crypto-arb-monitor.hf.space)
+          echo "HTTP Yanit Kodu: $STATUS"
+          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
+            echo "✅ Hugging Face Space uyanik ve aktif."
+          else
+            echo "⚠️ Beklenmeyen yanit kodu alindi: $STATUS"
+          fi

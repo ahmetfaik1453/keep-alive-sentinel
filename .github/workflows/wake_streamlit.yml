@@ -1,0 +1,36 @@
+name: Wake Up Streamlit App
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Her 2 saatte bir calisir
+  workflow_dispatch:
+
+jobs:
+  keep-alive-streamlit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu Klonla
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Playwright Tarayicisini Kur
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Streamlit Uygulamasini Denetle ve Uyandir
+        run: |
+          python scripts/keep_alive_streamlit.py
+
+      - name: Durum Ekran Goruntusunu Sakla
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: streamlit-alive-status
+          path: keep_alive_status.png
+          if-no-files-found: ignore

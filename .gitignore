@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+node_modules/
+.pytest_cache/
+keep_alive_status.png
